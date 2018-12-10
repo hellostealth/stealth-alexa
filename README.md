@@ -4,6 +4,8 @@ The Stealth Alexa driver adds the ability to build Alexa voice bots via [Stealth
 
 This Stealth integration provides a way of building Alexa Skills using Stealth. Though the patterns for voice bots are the same as text-based bots, the reply types supported are unique.
 
+[![Gem Version](https://badge.fury.io/rb/stealth-alexa.svg)](https://badge.fury.io/rb/stealth-alexa)
+
 ## Configure the Integration
 
 ## Replies
