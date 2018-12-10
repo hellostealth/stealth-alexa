@@ -11,15 +11,15 @@ module Stealth
 
       class Client < Stealth::Services::BaseClient
 
-        attr_reader :alexa_client, :reply
+        attr_reader :reply
 
         def initialize(reply:)
           @reply = reply
+          Thread.current[:alexa_reply] = reply
         end
 
         def transmit
-          response = twilio_client.messages.create(reply)
-          Stealth::Logger.l(topic: "twilio", message: "Transmitting. Response: #{response.status}: #{response.error_message}")
+          Stealth::Logger.l(topic: "alexa", message: "Response sent.")
         end
 
       end

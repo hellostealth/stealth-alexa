@@ -3,7 +3,7 @@
 
 module Stealth
   module Services
-    module Twilio
+    module Alexa
 
       class ReplyHandler < Stealth::Services::BaseReplyHandler
 
@@ -35,9 +35,7 @@ module Stealth
           end
 
           # End session
-          if reply['end_session']
-            response['response'].merge!(generate_end_session_response)
-          end
+          response['response'].merge!(generate_end_session_response(reply['end_session']))
 
           # Reprompts
           if reply['reprompt'].present?
@@ -59,11 +57,14 @@ module Stealth
         private
 
           def generate_alexa_response
-            { "version": "1.0" }
+            {
+              'version' => '1.0',
+              'response' => { }
+            }
           end
 
           def generate_speech_response(text:, ssml:, play_behavior: nil)
-            response = { 'outputSpeech': { } }
+            response = { 'outputSpeech' => { } }
 
             if ssml.present?
               response['outputSpeech']['type'] = 'SSML'
@@ -74,7 +75,7 @@ module Stealth
               end
 
               response['outputSpeech']['type'] = 'PlainText'
-              response['outputSpeech']['ssml'] = text
+              response['outputSpeech']['text'] = text
             end
 
             if play_behavior.present?
@@ -85,7 +86,7 @@ module Stealth
           end
 
           def generate_session_response(session_values:)
-            session_map = { 'sessionAttributes': { } }
+            session_map = { 'sessionAttributes' => { } }
 
             session_values.each do |k,v|
               session_map['sessionAttributes'][k] = v
@@ -94,8 +95,8 @@ module Stealth
             session_map
           end
 
-          def generate_end_session_response
-            { 'shouldEndSession': true }
+          def generate_end_session_response(end_session=false)
+            { 'shouldEndSession' => end_session }
           end
 
           def generate_reprompt_response
@@ -131,7 +132,7 @@ module Stealth
           end
 
           def generate_card_response
-            response = { 'card': { } }
+            response = { 'card' => { } }
 
             case reply['type']
             when 'Simple'
