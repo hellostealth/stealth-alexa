@@ -49,7 +49,16 @@ module Stealth
         def card
           response = generate_alexa_response
 
+          output_speech = generate_speech_response(
+            text: 'Done',
+            ssml: nil,
+            play_behavior: reply['play_behavior']
+          )
 
+          response['response'].merge!(output_speech)
+
+          card = generate_card_response
+          response['response'].merge!(card)
 
           response
         end
@@ -152,6 +161,8 @@ module Stealth
             when 'AskForPermissionsConsent'
               # Todo
             end
+
+            response
           end
 
       end
